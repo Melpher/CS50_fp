@@ -6,13 +6,10 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required
 
 # Configure application
 app = Flask(__name__)
-
-# Custom filter
-app.jinja_env.filters["usd"] = usd
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -90,19 +87,6 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
-
-@app.route("/quote", methods=["GET", "POST"])
-@login_required
-def quote():
-    """Get stock quote."""
-    if request.method == "POST":
-        stock = lookup(request.form.get("symbol"))
-        if stock == None:
-            return apology("Stock not found re-check the symbol", 400)
-        elif stock != None:
-            return render_template("quoted.html", stock=stock)
-
-    return render_template("quote.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
