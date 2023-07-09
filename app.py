@@ -33,10 +33,7 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    row = db.execute("SELECT * FROM account WHERE user = ?", session["user_id"])
-    cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
-
-    return render_template("index.html", account=row, cash=cash[0]["cash"])
+    return render_template("homepage.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -131,4 +128,4 @@ def register():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("register.html")
+        return render_template("signup.html")
